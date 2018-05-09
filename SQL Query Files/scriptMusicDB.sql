@@ -1,0 +1,104 @@
+USE [master]
+GO
+
+IF  NOT EXISTS (SELECT name FROM master.dbo.sysdatabases WHERE name = N'MUSIC')
+CREATE DATABASE [MUSIC]
+GO
+
+USE [MUSIC]
+GO
+
+CREATE TABLE [dbo].[ALBUMS](
+	[Ma_Album] [nvarchar](50) NOT NULL,
+	[Ten_Album] [nvarchar](max) NOT NULL,
+ CONSTRAINT [PK_ALBUMS] PRIMARY KEY ([Ma_Album])
+ )
+GO
+
+CREATE TABLE [dbo].[BAIHAT](
+	[Ma_BaiHat] [nvarchar](50) NOT NULL,
+	[Ma_Tua] [nvarchar](50) NOT NULL,
+	[Ma_CaSi] [nvarchar](50) NOT NULL,
+	[Ma_Album] [nvarchar](50) NOT NULL,
+	[Ma_TheLoai] [nvarchar](50) NOT NULL,
+	[Ma_CaSiAlbum] [nvarchar](50) NOT NULL,
+	[DuongDan] [nvarchar](max) NOT NULL,
+ CONSTRAINT [PK_BAIHAT] PRIMARY KEY ([Ma_BaiHat])
+ )
+GO
+
+CREATE TABLE [dbo].[CASI](
+	[Ma_CaSi] [nvarchar](50) NOT NULL,
+	[Ten_CaSi] [nvarchar](max) NOT NULL,
+ CONSTRAINT [PK_CASI] PRIMARY KEY ([Ma_CaSi])
+)
+GO
+
+CREATE TABLE [dbo].[CHITIETBAIHAT](
+	[Ma_BaiHat] [nvarchar](50) NOT NULL,
+	[ThoiLuong] [time](7) NOT NULL,
+	[Rating] [bit] NOT NULL DEFAULT ((0)),
+	[SoLanNghe] [int] NOT NULL DEFAULT ((0)),
+	[CoAnhBia] [bit] NOT NULL DEFAULT ((0)),
+	[NgayThemVaoCSDL] [datetime] NOT NULL,
+	[LanNgheCuoi] [datetime] NULL,
+	[NamPhatHanh] [char](4) NULL,
+PRIMARY KEY ([Ma_BaiHat])
+)
+GO
+
+CREATE TABLE [dbo].[TUA](
+	[Ma_Tua] [nvarchar](50) NOT NULL,
+	[Ten_Tua] [nvarchar](max) NULL,
+ CONSTRAINT [PK_TUA] PRIMARY KEY ([Ma_Tua])
+ )
+GO
+
+CREATE TABLE [dbo].[THELOAI](
+	[Ma_TheLoai] [nvarchar](50) NOT NULL,
+	[Ten_TheLoai] [nvarchar](50) NULL,
+ CONSTRAINT [PK_THELOAI] PRIMARY KEY ([Ma_TheLoai])
+ )
+GO
+
+ALTER TABLE [dbo].[BAIHAT]  WITH CHECK ADD  CONSTRAINT [FK_BAIHAT_ALBUMS] FOREIGN KEY([Ma_Album])
+REFERENCES [dbo].[ALBUMS] ([Ma_Album])
+GO
+
+ALTER TABLE [dbo].[BAIHAT] CHECK CONSTRAINT [FK_BAIHAT_ALBUMS]
+GO
+
+ALTER TABLE [dbo].[BAIHAT]  WITH CHECK ADD  CONSTRAINT [FK_BAIHAT_CASI] FOREIGN KEY([Ma_CaSi])
+REFERENCES [dbo].[CASI] ([Ma_CaSi])
+GO
+
+ALTER TABLE [dbo].[BAIHAT] CHECK CONSTRAINT [FK_BAIHAT_CASI]
+GO
+
+ALTER TABLE [dbo].[BAIHAT]  WITH CHECK ADD  CONSTRAINT [FK_BAIHAT_CASIALBUM] FOREIGN KEY([Ma_CaSiAlbum])
+REFERENCES [dbo].[CASI] ([Ma_CaSi])
+GO
+
+ALTER TABLE [dbo].[BAIHAT] CHECK CONSTRAINT [FK_BAIHAT_CASIALBUM]
+GO
+
+ALTER TABLE [dbo].[BAIHAT]  WITH CHECK ADD  CONSTRAINT [FK_BAIHAT_TUA] FOREIGN KEY([Ma_Tua])
+REFERENCES [dbo].[TUA] ([Ma_Tua])
+GO
+
+ALTER TABLE [dbo].[BAIHAT] CHECK CONSTRAINT [FK_BAIHAT_TUA]
+GO
+
+ALTER TABLE [dbo].[BAIHAT]  WITH CHECK ADD  CONSTRAINT [FK_BAIHAT_THELOAI] FOREIGN KEY([Ma_TheLoai])
+REFERENCES [dbo].[THELOAI] ([Ma_TheLoai])
+GO
+
+ALTER TABLE [dbo].[BAIHAT] CHECK CONSTRAINT [FK_BAIHAT_THELOAI]
+GO
+
+ALTER TABLE [dbo].[CHITIETBAIHAT]  WITH CHECK ADD  CONSTRAINT [FK_CHITIETBAIHAT_BAIHAT] FOREIGN KEY([Ma_BaiHat])
+REFERENCES [dbo].[BAIHAT] ([Ma_BaiHat])
+GO
+
+ALTER TABLE [dbo].[CHITIETBAIHAT] CHECK CONSTRAINT [FK_CHITIETBAIHAT_BAIHAT]
+GO

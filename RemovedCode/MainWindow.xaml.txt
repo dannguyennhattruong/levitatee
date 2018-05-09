@@ -1,0 +1,129 @@
+<ListView.View>
+                <GridView x:Name="gridview">
+
+                    <!--CoverArt-->
+                    <!--
+                    <GridViewColumn Width="70">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <Image Height="20" Width="20" Source="{Binding CoverArt}"
+                                       RenderOptions.BitmapScalingMode="HighQuality"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    -->
+                    
+                    
+                    <!--Title-->
+                    <GridViewColumn x:Name="col_Title"
+                                    Header="{DynamicResource title}"
+                                    Width="{Binding Source={x:Static p:Settings.Default}, Path=col_Title, Mode=OneWay}"
+                                    DisplayMemberBinding="{Binding Title}">
+                    </GridViewColumn>
+
+                    <!--Duration-->
+                    <GridViewColumn x:Name="col_Duration"
+                                    Header="{DynamicResource duration}"
+                                    Width="{Binding Source={x:Static p:Settings.Default}, Path=col_Duration, Mode=TwoWay}"
+                                    DisplayMemberBinding="{Binding TrueDuration}">
+                    </GridViewColumn>
+
+                    <!--Artist-->
+                    <GridViewColumn x:Name="col_Artist"
+                                    Header="{DynamicResource artist}"
+                                    Width="{Binding Source={x:Static p:Settings.Default}, Path=col_Artist, Mode=TwoWay}"
+                                    DisplayMemberBinding="{Binding Artist}"/>
+
+                    <!--Album-->
+                    <GridViewColumn x:Name="col_Album"
+                                    Header="{DynamicResource album}"
+                                    Width="{Binding Source={x:Static p:Settings.Default}, Path=col_Album, Mode=TwoWay}"
+                                    DisplayMemberBinding="{Binding Album}"/>
+
+                    <!--Genre-->
+                    <GridViewColumn x:Name="col_Genre"
+                                    Header="{DynamicResource genre}"
+                                    Width="{Binding Source={x:Static p:Settings.Default}, Path=col_Genre, Mode=TwoWay}"
+                                    DisplayMemberBinding="{Binding Genre}"/>
+
+                    <!--Favourite ToggleButton-->
+                    <GridViewColumn x:Name="col_Favourite" Header="{iconPacks:PackIconMaterial HeartOutline, Height=14, Width=14}"
+                                    Width="{Binding Source={x:Static p:Settings.Default}, Path=col_Favourite, Mode=TwoWay}">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <ToggleButton Style="{StaticResource MaterialDesignActionToggleButton}"
+                                              Background="Transparent"
+                                              HorizontalAlignment="Center"
+                                              VerticalAlignment="Center"
+                                              Height="18" Width="18"
+                                              IsChecked="{Binding IsFavourite, Mode=TwoWay}"
+                                              Command="{Binding ToggleFavourite}">
+                                    <ToggleButton.Content>
+                                        <iconPacks:PackIconMaterial Kind="HeartOutline" Opacity="0.3" Height="14" Width="14" Foreground="Black"/>
+                                    </ToggleButton.Content>
+                                    <materialDesign:ToggleButtonAssist.OnContent>
+                                        <iconPacks:PackIconMaterial Kind="Heart" Height="14" Width="14" Foreground="Black"/>
+                                    </materialDesign:ToggleButtonAssist.OnContent>
+                                </ToggleButton>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+
+                </GridView>
+            </ListView.View>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<StackPanel Grid.Column="0" Grid.Row="1" Margin="0 10 0 0" Height="Auto" VerticalAlignment="Top">
+
+            <Button x:Name="button_RecentlyAdded" HorizontalContentAlignment="Left" Command="{Binding ShowRecentlyAdded}"
+                    Style="{DynamicResource MaterialDesignFlatButton}"
+                    Height="45" Width="200"
+                    Grid.Column="0" Grid.Row="1"
+                    ToolTip="{DynamicResource ttip_recentlyAdded}">
+                <StackPanel Orientation="Horizontal" Margin="0 5 0 5">
+                    <Image Source="pack://application:,,,/Resources/Images/listbox_recentlyAdded.png" Height="20" Width="20" Margin="5 0 15 0"/>
+                    <TextBlock Text="{DynamicResource recentlyAdded}" Foreground="LightGray" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="15"/>
+                </StackPanel>
+            </Button>
+
+            <Button x:Name="lbItem_Songs" HorizontalContentAlignment="Left" Command="{Binding ShowAllSongs}"
+                    Style="{DynamicResource MaterialDesignFlatButton}"
+                    Height="45" Width="200"
+                    Grid.Column="0" Grid.Row="1">
+                <StackPanel Orientation="Horizontal" Margin="0 5 0 5" >
+                    <Image Source="pack://application:,,,/Resources/Images/listbox_songs.png" Height="20" Width="20" Margin="5 0 15 0"/>
+                    <TextBlock Text="{DynamicResource songs}" Foreground="LightGray" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="15"/>
+                </StackPanel>
+            </Button>
+
+            <Button x:Name="lbItem_Favourite" HorizontalContentAlignment="Left" Command="{Binding ShowFavourites}"
+                    Style="{DynamicResource MaterialDesignFlatButton}"
+                    Height="45" Width="200"
+                    Grid.Column="0" Grid.Row="1">
+                <StackPanel Orientation="Horizontal" Margin="0 5 0 5" >
+                    <Image Source="pack://application:,,,/Resources/Images/listbox_favourite.png" Height="20" Width="20" Margin="5 0 15 0"/>
+                    <TextBlock Text="{DynamicResource favourite}" Foreground="LightGray" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="15"/>
+                </StackPanel>
+            </Button>
+        </StackPanel>

@@ -1,0 +1,673 @@
+using Levitate.Model;
+using Levitate.ViewModel;
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.IO;
+using System.Linq;
+using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
+using System.Windows.Media;
+
+namespace Levitate.Core
+{
+    public class Manager : PropertyChangedBase, IDisposable
+    {
+        #region Declarations
+        /*
+        private Track _selectedTrack;
+        public Track SelectedTrack
+        {
+            get { return _selectedTrack; }
+            set { SetProperty(value, ref _selectedTrack); }
+        }
+        */
+
+        #region InstanceZone
+
+        private static Manager _managerInstance;
+        public static Manager ManagerInstance
+        {
+            get { return _managerInstance ?? (_managerInstance = new Manager()); }
+        }
+
+        #endregion
+
+        private Track _currentTrack;
+        public Track CurrentTrack
+        {
+            get { return _currentTrack; }
+            set
+            {
+                if (_currentTrack != value)
+                {
+                    SetProperty(value, ref _currentTrack);
+                    OnPropertyChanged("CurrentTrack");
+                }
+            }
+        }
+
+
+        private Track _selectedTrack;
+        public Track SelectedTrack
+        {
+            get { return _selectedTrack; }
+            set
+            {
+                if (_selectedTrack != value)
+                {
+                    SetProperty(value, ref _selectedTrack);
+                    OnPropertyChanged("SelectedTrack");
+                }
+            }
+        }
+        
+
+        private bool _isLoopOne;
+        public bool IsLoopOne
+        {
+            get { return _isLoopOne; }
+            set
+            {
+                if (value != _isLoopOne)
+                {
+                    SetProperty(value, ref _isLoopOne);
+                    OnPropertyChanged("IsLoopOne");
+                }
+            }
+        }
+
+        
+        private bool _isShuffle;
+        public bool IsShuffle
+        {
+            get { return _isShuffle; }
+            set
+            {
+                if (SetProperty(value, ref _isShuffle) && value)
+                {
+                    OnPropertyChanged("IsShuffle");
+                }
+            }
+        }
+        
+
+        
+        private Playlist _selectedPlaylist;
+        public Playlist SelectedPlaylist
+        {
+            get { return _selectedPlaylist; }
+            set
+            {
+                SetProperty(value, ref _selectedPlaylist);
+                OnPropertyChanged("SelectedPlaylist");
+            }
+        }
+
+
+        private Playlist _currentPlaylist;
+        public Playlist CurrentPlaylist
+        {
+            get { return _currentPlaylist; }
+            set
+            {
+                SetProperty(value, ref _currentPlaylist);
+                OnPropertyChanged("CurrentPlaylist");
+            }
+        }
+
+
+        private Playlist _allSongs;                         //ok
+        public Playlist AllSongs
+        {
+            get { return _allSongs; }
+            set
+            {
+                SetProperty(value, ref _allSongs);
+                OnPropertyChanged("AllSongs");
+            }
+        }
+
+        
+        public Playlist RecentlyAdded
+        {
+            get { return Reader.GetRecentlyAdded(AllSongs); }
+        }
+        
+
+        public Playlist Favourites
+        {
+            get { return Reader.GetFavourites(AllSongs); }
+        }
+
+        
+        private string _searchText;
+        public string SearchText
+        {
+            get { return _searchText; }
+            set { _searchText = value; }
+        }
+
+
+        private ObservableCollection<Playlist> _playlists;  //ok
+        public ObservableCollection<Playlist> Playlists
+        {
+            get { return _playlists; }
+            set
+            {
+                SetProperty(value, ref _playlists);
+                OnPropertyChanged("Playlists");
+            }
+        }
+        
+
+
+        private byte[] _currentTrackCoverArt;
+        public byte[] CurrentTrackCoverArt
+        {
+            get { return _currentTrackCoverArt; }
+            set
+            {
+                if (value != _currentTrackCoverArt)
+                {
+                    SetProperty(value, ref _currentTrackCoverArt);
+                    OnPropertyChanged("CurrentTrackCoverArt");
+                }
+            }
+        }
+
+
+        private bool _playState;
+        public bool PlayState
+        {
+            get { return _playState; }
+            set
+            {
+                if (value != _playState)
+                {
+                    PauseState = !PlayState;
+                    SetProperty(value, ref _playState);
+                    OnPropertyChanged("PlayState");
+                }
+            }
+        }
+
+        private bool _pauseState;
+        public bool PauseState
+        {
+            get { return _pauseState = !PlayState; }
+            set
+            {
+                if (value != _pauseState)
+                {
+                    PlayState = !PauseState;
+                    SetProperty(value, ref _pauseState);
+                    OnPropertyChanged("PauseState");
+                }
+            }
+        }
+
+
+        public WMPLib.WindowsMediaPlayer Player { get; protected set; }
+        public System.Windows.Forms.Timer Tim { get; set; }
+        public ManagerCommands Commands { get; protected set; }
+        #endregion
+
+
+
+        #region Ctor & Loading
+        /// <summary>
+        /// Ctor
+        /// </summary>
+        public Manager()
+        {
+            Player = new WMPLib.WindowsMediaPlayer();
+            Playlists = new ObservableCollection<Playlist>();
+
+            Load();
+            Commands = new ManagerCommands(this);
+        }
+
+        /// <summary>
+        /// Load method
+        /// </summary>
+        void Load()
+        {
+            // Load playlist
+            LoadPlaylists();
+
+            // Player state
+            IsLoopOne = Properties.Settings.Default.IsLoopOne;
+            IsShuffle = Properties.Settings.Default.IsShuffle;
+
+            // Load engine
+            LoadEngine();
+        }
+
+        /// <summary>
+        /// Load media player engine
+        /// </summary>
+        void LoadEngine()
+        {
+            Player = new WMPLib.WindowsMediaPlayer();
+            Player.settings.setMode("autoRewind", IsLoopOne);
+            Player.settings.volume = Properties.Settings.Default.volume;
+            PlayState = true;
+            Tim = new System.Windows.Forms.Timer();
+        }
+
+        /// <summary>
+        /// Load Playlists
+        /// </summary>
+        void LoadPlaylists()
+        {
+            // Load user's playlists
+            Task t1 = Task.Factory.StartNew(() => Playlists = PlaylistsSetting.LoadPlaylists());
+            
+            // Load application playlist
+            Task t2 = Task.Factory.StartNew(() => LoadApplicationPlaylist());
+            Task.WaitAll();
+        }
+
+        /// <summary>
+        /// Load application type playlist and pump data to this fields
+        /// </summary>
+        public void LoadApplicationPlaylist()
+        {
+            // Load library
+            Task t1 = Task.Factory.StartNew(() => AllSongs = Reader.GetSongs());
+            t1.Wait();
+            
+            CurrentPlaylist = RecentlyAdded;
+            SelectedPlaylist = RecentlyAdded;
+
+            if (CurrentTrack == null)
+            {
+                CurrentTrack = CurrentPlaylist.ListTrack.Count > 0 ? CurrentPlaylist.ListTrack.First() : null;
+                CurrentTrackCoverArt = CurrentTrack != null ? Reader.GetCoverArt(CurrentTrack) : null;
+            }
+        }
+        #endregion
+
+
+
+        #region Play control
+
+        /// <summary>
+        /// Handling player's state
+        /// </summary>
+        /// <param name="NewState"></param>
+        private void player_PlayStateChange(int NewState)
+        {
+            if (NewState == 8)
+            {
+                PlayForward();
+            }
+        }
+
+        void tmr_Tick(object sender, EventArgs e)
+        {
+            Tim.Stop();
+            PlayForward();
+        }
+
+        public void Begin()
+        {
+            Tim.Interval = 10;
+            Tim.Stop();
+            Tim.Tick += new EventHandler(tmr_Tick);
+
+            Player.PlayStateChange += new WMPLib._WMPOCXEvents_PlayStateChangeEventHandler(player_PlayStateChange);
+            Player.controls.play();
+        }
+
+        /// <summary>
+        /// Play with a given track and playlist
+        /// </summary>
+        /// <param name="track"></param>
+        /// <param name="playlist"></param>
+        public void Play()
+        {
+            // Play activating
+            if (Player.playState == WMPLib.WMPPlayState.wmppsPaused)
+            {
+                CurrentTrack.PlayingState = Utils.ConvertBitmapSourceToByteArray(new Uri(@"pack://application:,,,/Resources/Images/play.png"));
+                PauseState = true;
+                Begin();
+                return;
+            }
+
+            // Check track is exists or not
+            if (CurrentTrack == null || !CurrentTrack.IsExist)
+            {
+                if (CurrentPlaylist != null && CurrentPlaylist.ListTrack.Count > 0)
+                {
+                    CurrentTrack = CurrentPlaylist.ListTrack.First();
+                    CurrentTrackCoverArt = Reader.GetCoverArt(CurrentTrack);
+                }
+                else if (SelectedPlaylist != null && SelectedPlaylist.ListTrack.Count > 0)
+                {
+                    CurrentPlaylist = SelectedPlaylist;
+                    CurrentTrack = CurrentPlaylist.ListTrack.First();
+                    CurrentTrackCoverArt = Reader.GetCoverArt(CurrentTrack);
+                }
+                else
+                    return;
+            }
+
+            Player.URL = CurrentTrack.Location;
+            CurrentTrack.PlayingState = Utils.ConvertBitmapSourceToByteArray(new Uri(@"pack://application:,,,/Resources/Images/play.png"));
+            PauseState = true;
+            Begin();
+            return;
+        }
+
+        /// <summary>
+        /// Play Selected track in selected playlist
+        /// </summary>
+        public void PlaySelectedTrack()
+        {
+            Stop();
+            BackHere:
+            if (SelectedTrack != null)
+            {
+                // Change current playlist and track
+                CurrentPlaylist = SelectedPlaylist;
+                CurrentTrack = SelectedTrack;
+
+                CurrentTrackCoverArt = Reader.GetCoverArt(CurrentTrack);
+                Play();
+            }
+            else
+            {
+                if(SelectedPlaylist!=null && SelectedPlaylist.ListTrack.Count > 0)
+                {
+                    SelectedTrack = SelectedPlaylist.ListTrack.First();
+                    goto BackHere;
+                }
+                else
+                {
+                    return;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Pause
+        /// </summary>
+        public void Pause()
+        {
+            CurrentTrack.PlayingState = Utils.ConvertBitmapSourceToByteArray(new Uri(@"pack://application:,,,/Resources/Images/pause.png"));
+            Player.controls.pause();
+            PlayState = true;
+        }
+
+        /// <summary>
+        /// Stop playing
+        /// </summary>
+        public void Stop()
+        {
+            if (CurrentTrack != null)
+            {
+                CurrentTrack.PlayingState = null;
+                Player.controls.stop();
+                PlayState = true;
+            }
+        }
+
+        /// <summary>
+        /// Go forward
+        /// </summary>
+        public void PlayForward()
+        {
+            // Stop playing
+            Stop();
+
+            // If current playlist null => return
+            if (CurrentPlaylist == null || CurrentPlaylist.ListTrack.Count == 0)
+            {
+                return;
+            }
+            
+            // If loop one => back to Zero
+            if (IsLoopOne)
+            {
+                Player.controls.currentPosition = 0;
+                Play();
+                return;
+            }
+
+            // Call next track and assign to CurrentTrack
+            CurrentTrack = Playlist.NextTrack(CurrentPlaylist, CurrentTrack);
+            CurrentTrackCoverArt = Reader.GetCoverArt(CurrentTrack);
+            // Checking
+            if (CurrentTrack.IsExist)
+            {
+                Play();
+                return;
+            }
+            else
+                PlayForward();
+        }
+
+        /// <summary>
+        /// Go backward
+        /// </summary>
+        public void PlayBackward()
+        {
+            // Stop playing
+            Stop();
+
+            // If current playlist null => return
+            if (CurrentPlaylist == null || CurrentPlaylist.ListTrack.Count == 0)
+            {
+                return;
+            }
+
+            // If loop one => back to Zero
+            if (IsLoopOne)
+            {
+                Player.controls.currentPosition = 0;
+                Play();
+                return;
+            }
+
+            // Call previous track and assign to CurrentTrack
+            CurrentTrack = Playlist.PreviousTrack(CurrentPlaylist, CurrentTrack);
+            CurrentTrackCoverArt = Reader.GetCoverArt(CurrentTrack);
+            // Checking
+            if (CurrentTrack.IsExist)
+            {
+                Play();
+                return;
+            }
+            else
+                PlayBackward();
+        }
+
+        /// <summary>
+        /// Toggle Play-Pause
+        /// </summary>
+        public void TogglePlayPause()
+        {
+            if (Player.playState == WMPLib.WMPPlayState.wmppsPlaying)
+            {
+                Pause();
+                PlayState = true;
+                return;
+            }
+            else if (Player.playState == WMPLib.WMPPlayState.wmppsPaused)
+            {
+                Play();
+                PauseState = true;
+                return;
+            }
+            else
+            {
+                PlaySelectedTrack();
+            }
+        }
+        #endregion
+        
+
+
+        /// <summary>
+        /// Delete one given playlist
+        /// </summary>
+        /// <param name="playlist"></param>
+        public void DeleteOnePlaylist(Playlist playlist)
+        {
+            if (playlist.Prio == Playlist.Priority.User && playlist.CanEdit)
+            {
+                // Check if engine is play a song in a user playlist => stop and change current playlist to recently added
+                if (CurrentPlaylist == playlist)
+                {
+                    Stop();
+                    CurrentPlaylist = RecentlyAdded;
+                }
+
+                Playlists.Remove(playlist);
+            }
+        }
+
+        /// <summary>
+        /// Delete all user playlist
+        /// </summary>
+        public void DeleteAllUserPlaylist()
+        {
+            // Check if engine is play a song in a user playlist => stop and change current playlist to recently added
+            if (Playlists != null)
+            {
+                if (Playlists.Contains(CurrentPlaylist))
+                {
+                    Stop();
+                    CurrentPlaylist = RecentlyAdded;
+                }
+                
+                // Delete all user playlists
+                if (Playlists != null) Playlists.Clear();
+            }
+        }
+
+        /// <summary>
+        /// Delete one given track
+        /// </summary>
+        /// <param name="track"></param>
+        public void DeleteOneTrack(Track track)
+        {
+            // If playlist is application and can not edit => return
+            if (!SelectedPlaylist.CanEdit && SelectedPlaylist.Prio == Playlist.Priority.Application)
+                return;
+            // In case selected playlist is current playlist
+            else if(CurrentPlaylist.DateCreated == SelectedPlaylist.DateCreated)
+            {
+                // In case that current playlist is All Songs
+                if (SelectedPlaylist.CanEdit && SelectedPlaylist.Prio == Playlist.Priority.Application)
+                {
+                    RemoveSelecurrent(track);
+                    Updater.DeleteOneTrack(track);
+                }
+                RemoveSelecurrent(track);
+            }
+            // In case All Songs playlist
+            else if(SelectedPlaylist.CanEdit && SelectedPlaylist.Prio == Playlist.Priority.Application)
+            {
+                RemoveInAllSongs(track);
+            }
+            // In case User's playlist
+            else if(SelectedPlaylist.Prio == Playlist.Priority.User)
+            {
+                RemoveSelecPL(track);
+            }
+        }
+
+        #region Essential for deleting one track
+        void RemoveSelecurrent(Track track)
+        {
+            if (CurrentTrack == track)
+            {
+                Stop();
+                if (!IsLoopOne)
+                    PlayForward();
+            }
+            CurrentPlaylist.RemoveTrack(track);
+            SelectedPlaylist.RemoveTrack(track);
+        }
+        void RemoveSelecPL(Track track)
+        {
+            SelectedPlaylist.RemoveTrack(track);
+        }
+        void RemoveInAllSongs(Track track)
+        {
+            if (CurrentTrack == track)
+            {
+                Stop();
+                if (!IsLoopOne)
+                    PlayForward();
+            }
+            CurrentPlaylist.RemoveTrack(track);
+            SelectedPlaylist.RemoveTrack(track);
+            Updater.DeleteOneTrack(track);
+        }
+        #endregion
+        
+        /// <summary>
+        /// Save settings
+        /// </summary>
+        public void Save()
+        {
+            using(var setting = new PlaylistsSetting())
+            {
+                setting.Playlists = this.Playlists;
+                setting.SavePlaylist();
+            }
+            Properties.Settings.Default.IsLoopOne = IsLoopOne;
+            Properties.Settings.Default.IsShuffle = IsShuffle;
+            Properties.Settings.Default.volume = Player.settings.volume;
+        }
+
+        public void SetLoop()
+        {
+            if(IsLoopOne)
+                Player.settings.setMode("autoRewind", IsLoopOne);
+        }
+                
+
+
+        #region Disposable Implement
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        public virtual void Dispose(bool disposing)
+        {
+            if (!this._disposed)
+            {
+                if (disposing)
+                {
+                    Stop();
+
+                    CurrentPlaylist = null;
+                    CurrentTrack = null;
+                    Player = null;
+                    Playlists = null;
+                    SelectedPlaylist = null;
+                    SelectedTrack = null;
+                    CurrentTrackCoverArt = null;
+                }
+                _disposed = true;
+            }
+        }
+
+        ~Manager()
+        {
+            Dispose(false);
+        }
+        private bool _disposed = false;
+        #endregion
+
+    }
+}

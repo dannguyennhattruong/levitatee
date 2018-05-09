@@ -1,0 +1,695 @@
+using Levitate.Core;
+using Levitate.Model;
+using Levitate.Properties;
+using Levitate.View;
+using MahApps.Metro.Controls;
+using MahApps.Metro.Controls.Dialogs;
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.IO;
+using System.Linq;
+using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+using System.Windows.Input;
+
+namespace Levitate.ViewModel
+{
+    public class MainWindowViewModel : PropertyChangedBase
+    {
+        #region InstanceZone
+
+        private static MainWindowViewModel _instance;
+        public static MainWindowViewModel Instance
+        {
+            get { return _instance ?? (_instance = new MainWindowViewModel()); }
+        }
+
+        #endregion
+
+
+
+        #region Declarations
+
+        private Playlist _selectedPlaylist;
+        private Playlist _currentPlaylist;
+        private Playlist _recentlyAdded;
+        private Playlist _allSongs;
+        private Playlist _favourites;
+        private ObservableCollection<Playlist> _playlists;
+
+        private Track _currentPlayingTrack;
+        private Track _currentSelectedTrack;
+        private Track[] _currentSelectedTracks;
+        private double _currentTrackLength;
+        private double _currentTrackPosition;
+        private float _currentVolume;
+        private AudioEngine _audioEngine;
+
+        public Playlist SelectedPlaylist
+        {
+            get { return _selectedPlaylist; }
+            set
+            {
+                if (Equals(value, _selectedPlaylist)) return;
+                _selectedPlaylist = value;
+                OnPropertyChanged(nameof(SelectedPlaylist));
+            }
+        }
+        public Playlist CurrentPlaylist
+        {
+            get { return _currentPlaylist; }
+            set
+            {
+                if (Equals(value, _currentPlaylist)) return;
+                _currentPlaylist = value;
+                OnPropertyChanged(nameof(CurrentPlaylist));
+            }
+        }
+        public Playlist RecentlyAdded
+        {
+            get { return _recentlyAdded; }
+            set
+            {
+                if (Equals(value, _recentlyAdded)) return;
+                _recentlyAdded = value;
+                OnPropertyChanged(nameof(RecentlyAdded));
+            }
+        }
+        public Playlist AllSongs
+        {
+            get { return _allSongs; }
+            set
+            {
+                if (Equals(value, _allSongs)) return;
+                _allSongs = value;
+                OnPropertyChanged(nameof(AllSongs));
+            }
+        }
+        public Playlist Favourites
+        {
+            get { return _favourites; }
+            set
+            {
+                if (Equals(value, _favourites)) return;
+                _favourites = value;
+                OnPropertyChanged(nameof(Favourites));
+            }
+        }
+        public ObservableCollection<Playlist> Playlists
+        {
+            get { return _playlists; }
+            set
+            {
+                if (Equals(value, _playlists)) return;
+                _playlists = value;
+                OnPropertyChanged(nameof(Playlists));
+            }
+        }
+
+        public Track CurrentPlayingTrack
+        {
+            get { return _currentPlayingTrack; }
+            set
+            {
+                if (Equals(value, _currentPlayingTrack)) return;
+                _currentPlayingTrack = value;
+                OnPropertyChanged(nameof(CurrentPlayingTrack));
+            }
+        }
+        public Track CurrentSelectedTrack
+        {
+            get { return _currentSelectedTrack; }
+            set
+            {
+                if (Equals(value, _currentSelectedTrack)) return;
+                _currentSelectedTrack = value;
+                OnPropertyChanged(nameof(CurrentSelectedTrack));
+            }
+        }
+        public Track[] CurrentSelectedTracks
+        {
+            get { return _currentSelectedTracks; }
+            set
+            {
+                if (Equals(value, _currentSelectedTracks)) return;
+                _currentSelectedTracks = value;
+                OnPropertyChanged(nameof(CurrentSelectedTracks));
+            }
+        }
+        public double CurrentTrackLength
+        {
+            get { return _currentTrackLength; }
+            set
+            {
+                if (value.Equals(_currentTrackLength)) return;
+                _currentTrackLength = value;
+                OnPropertyChanged(nameof(CurrentTrackLength));
+            }
+        }
+        public double CurrentTrackPosition
+        {
+            get { return _currentTrackPosition; }
+            set
+            {
+                if (value.Equals(_currentTrackPosition)) return;
+                _currentTrackPosition = value;
+                OnPropertyChanged(nameof(CurrentTrackPosition));
+            }
+        }
+        public float CurrentVolume
+        {
+            get { return _currentVolume; }
+            set
+            {
+                if (value.Equals(_currentVolume)) return;
+                _currentVolume = value;
+                OnPropertyChanged(nameof(CurrentVolume));
+            }
+        }
+
+        public byte[] CurrentCoverArt
+        {
+            get
+            {
+                return Reader.GetCoverArt(CurrentPlayingTrack) ??
+                  Core.Utils.ConvertBitmapSourceToByteArray(new Uri(@"pack://application:,,,/Resources/Images/defaultCover2.jpg"));
+            }
+        }
+
+        public ICommand AddFileCommand { get; set; }
+        public ICommand AddFolderCommand { get; set; }
+        public ICommand AddFileToPlaylistCommand { get; set; }
+        public ICommand SavePlaylistsCommand { get; set; }
+        public ICommand LoadPlaylistCommand { get; set; }
+
+        public ICommand RewindToStartCommand { get; set; }
+        public ICommand StartPlaybackCommand { get; set; }
+        public ICommand StopPlaybackCommand { get; set; }
+        public ICommand ForwardToEndCommand { get; set; }
+        public ICommand ShuffleCommand { get; set; }
+
+        public ICommand TrackControlMouseDownCommand { get; set; }
+        public ICommand TrackControlMouseUpCommand { get; set; }
+        public ICommand VolumeControlValueChangedCommand { get; set; }
+
+        public ICommand NewPlaylistCommand { get; set; }
+        public ICommand NewSmartPlaylistCommand { get; set; } // Not enough level yet
+        public ICommand DeletePlaylistCommand { get; set; }
+        public ICommand DeleteAllPlaylistCommand { get; set; }
+        public ICommand CleanupLibraryCommand { get; set; }
+
+        public ICommand GetInfoCommand { get; set; }
+        public ICommand CopyTrackCommand { get; set; }
+        public ICommand DeleteTrackCommand { get; set; }
+
+
+        public ICommand RecentlyAddedCommand { get; set; }
+        public ICommand SongsCommand { get; set; }
+        public ICommand FavouritesCommand { get; set; }
+
+        private enum PlaybackState
+        {
+            Stopped, Playing, Paused
+        }
+        private PlaybackState _playbackState;
+        #endregion
+
+
+
+        #region Ctor and Essensial Methods
+
+        /// <summary>
+        /// Constructor
+        /// </summary>
+        public MainWindowViewModel()
+        {
+            LoadPlaylist();
+            LoadCommands();
+
+            _playbackState = PlaybackState.Stopped;
+            CurrentVolume = 1;
+        }
+
+
+        /// <summary>
+        /// Load Playlists
+        /// </summary>
+        private void LoadPlaylist()
+        {
+            SelectedPlaylist = CurrentPlaylist = AllSongs = Reader.GetSongs();
+            RecentlyAdded = Reader.GetRecentlyAdded(AllSongs);
+            Favourites = Reader.GetFavourites(AllSongs);
+
+            Playlists = new ObservableCollection<Playlist>();
+            Playlists = Reader.LoadPlaylists(Directory.GetCurrentDirectory());
+        }
+
+
+        /// <summary>
+        /// Load Commands
+        /// </summary>
+        private void LoadCommands()
+        {
+            AddFileCommand = new RelayCommand(AddFile, CanAddFile);
+            AddFolderCommand = new RelayCommand(AddFolder, CanAddFolder);
+            AddFileToPlaylistCommand = new RelayCommand(AddFileToPlaylist, CanAddFileToPlaylist);
+            SavePlaylistsCommand = new RelayCommand(SavePlaylists, CanSavePlaylists);
+            LoadPlaylistCommand = new RelayCommand(LoadPlaylist, CanLoadPlaylist);
+
+            RewindToStartCommand = new RelayCommand(RewindToStart, CanRewindToStart);
+            StartPlaybackCommand = new RelayCommand(StartPlayback, CanStartPlayback);
+            StopPlaybackCommand = new RelayCommand(StopPlayback, CanStopPlayback);
+            ForwardToEndCommand = new RelayCommand(ForwardToEnd, CanForwardToEnd);
+            ShuffleCommand = new RelayCommand(Shuffle, CanShuffle);
+
+            TrackControlMouseDownCommand = new RelayCommand(TrackControlMouseDown, CanTrackControlMouseDown);
+            TrackControlMouseUpCommand = new RelayCommand(TrackControlMouseUp, CanTrackControlMouseUp);
+            VolumeControlValueChangedCommand = new RelayCommand(VolumeControlValueChanged, CanVolumeControlValueChanged);
+
+            NewPlaylistCommand = new RelayCommand(NewPlaylist, CanNewPlaylist);
+            //NewSmartPlaylistCommand = new RelayCommand(NewSmartPlaylist, CanNewSmartPlaylist);
+            DeletePlaylistCommand = new RelayCommand(DeletePlaylist, CanDeletePlaylist);
+            DeleteAllPlaylistCommand = new RelayCommand(DeleteAllPlaylist, CanDeleteAllPlaylist);
+            CleanupLibraryCommand = new RelayCommand(CleanupLibrary, CanCleanupLibrary);
+
+            GetInfoCommand = new RelayCommand(GetInfo, CanGetInfo);
+            CopyTrackCommand = new RelayCommand(CopyTrack, CanCopyTrack);
+            DeleteTrackCommand = new RelayCommand(DeleteTrack, CanDeleteTrack);
+
+            RecentlyAddedCommand = new RelayCommand(GetRecentlyAdded, CanGetRecentlyAdded);
+            SongsCommand = new RelayCommand(GetSongs, CanGetSongs);
+            FavouritesCommand = new RelayCommand(GetFavourites, CanGetFavourites);
+        }
+
+        #endregion
+
+
+
+        #region Comamnds content zone
+        private void CopyTrack(object obj)
+        {
+
+        }
+        private bool CanCopyTrack(object obj)
+        {
+            if (CurrentSelectedTrack != null)
+                return true;
+            return false;
+        }
+
+        private void GetRecentlyAdded(object obj)
+        {
+            SelectedPlaylist = RecentlyAdded = Reader.GetRecentlyAdded(AllSongs);
+        }
+        private bool CanGetRecentlyAdded(object obj)
+        {
+            return true;
+        }
+
+        private void GetSongs(object obj)
+        {
+            SelectedPlaylist = AllSongs;
+        }
+        private bool CanGetSongs(object obj)
+        {
+            return true;
+        }
+
+
+        private void GetFavourites(object obj)
+        {
+            SelectedPlaylist = Favourites = Reader.GetFavourites(AllSongs);
+        }
+        private bool CanGetFavourites(object obj)
+        {
+            return true;
+        }
+
+        private void DeleteAllPlaylist(object obj)
+        {
+            if (CurrentPlaylist == SelectedPlaylist)
+            {
+                if (_audioEngine != null)
+                {
+                    _audioEngine.Dispose();
+                }
+                CurrentPlaylist = RecentlyAdded;
+            }
+            Updater.CleanAllPlaylists(Playlists);
+        }
+        private bool CanDeleteAllPlaylist(object obj)
+        {
+            return true;
+        }
+
+
+        private void DeletePlaylist(object obj)
+        {
+            if (CurrentPlaylist == SelectedPlaylist)
+            {
+                if (_audioEngine != null)
+                {
+                    _audioEngine.Dispose();
+                }
+                SelectedPlaylist = RecentlyAdded;
+                CurrentPlaylist = null;
+            }
+            Playlists.Remove(SelectedPlaylist);
+        }
+        private bool CanDeletePlaylist(object obj)
+        {
+            return true;
+        }
+
+
+        private void NewPlaylist(object obj)
+        {
+            CreatePlaylistWindow createPLWindow = new CreatePlaylistWindow();
+            createPLWindow.ShowDialog();
+        }
+        private bool CanNewPlaylist(object obj)
+        {
+            return true;
+        }
+
+
+        private void DeleteTrack(object obj)
+        {
+            if (SelectedPlaylist.Prio == Playlist.Priority.User)
+            {
+                foreach (var track in CurrentSelectedTracks)
+                    SelectedPlaylist.RemoveTrack(track);
+            }
+            else
+            {
+                // Remove here
+                foreach (var track in CurrentSelectedTracks)
+                    SelectedPlaylist.RemoveTrack(track);
+
+                // Remove in DB
+                Updater.DeleteOneTrack(CurrentSelectedTrack);
+            }
+        }
+        private bool CanDeleteTrack(object obj)
+        {
+            return true;
+        }
+
+
+        private void GetInfo(object obj)
+        {
+            var _track = CurrentSelectedTrack;
+            using (var infoWindow = new TrackInformationWindow(ref _track, Settings.Default.Lang))
+            {
+                infoWindow.ShowDialog();
+            }
+        }
+        private bool CanGetInfo(object obj)
+        {
+            if (CurrentSelectedTrack != null && CurrentSelectedTrack.IsExist)
+                return true;
+            return false;
+        } // =>>>>>>> if track does not exist delete it
+
+
+        private async void CleanupLibrary(object obj)
+        {
+            // Show comfirm message dialog
+            MessageDialogResult result = await ((MetroWindow)System.Windows.Application.Current.MainWindow).ShowMessageAsync
+                 (System.Windows.Application.Current.MainWindow.FindResource("attention").ToString(),
+                  System.Windows.Application.Current.MainWindow.FindResource("doYouWantToClearAll").ToString(), MessageDialogStyle.AffirmativeAndNegative, null);
+
+            // If return affirmative then clean db
+            if (result == MessageDialogResult.Affirmative)
+            {
+                Updater.CleanDatabase();
+                Playlists = null;
+                LoadPlaylist();
+            }
+        }
+        private bool CanCleanupLibrary(object obj)
+        {
+            return true;
+        }
+
+
+        private void VolumeControlValueChanged(object obj)
+        {
+            if (_audioEngine != null)
+                _audioEngine.SetVolume(CurrentVolume); //////////////////// set slider
+        }
+        private bool CanVolumeControlValueChanged(object obj)
+        {
+            return true;
+        }
+
+        private void TrackControlMouseUp(object obj)
+        {
+            if (_audioEngine != null)
+            {
+                _audioEngine.SetPosition(CurrentTrackPosition);
+                _audioEngine.Play(NAudio.Wave.PlaybackState.Paused, CurrentVolume);
+            }
+        }
+        private bool CanTrackControlMouseUp(object obj)
+        {
+            if (_playbackState == PlaybackState.Paused)
+                return true;
+            return false;
+        }
+
+
+        private void TrackControlMouseDown(object obj)
+        {
+            if (_audioEngine != null)
+            {
+                _audioEngine.Pause();
+            }
+        }
+        private bool CanTrackControlMouseDown(object obj)
+        {
+            if (_playbackState == PlaybackState.Playing)
+                return true;
+            return false;
+        }
+
+
+        private void Shuffle(object obj)
+        {
+            CurrentPlaylist.ListTrack = Playlist.ShuffleList(CurrentPlaylist.ListTrack);
+        }
+        private bool CanShuffle(object obj)
+        {
+            return true;
+        }
+
+
+        private void ForwardToEnd(object obj)
+        {
+            if (_audioEngine != null)
+            {
+                _audioEngine.PlaybackStopType = AudioEngine.PlaybackStopTypes.EndOfFile;
+                _audioEngine.SetPosition(_audioEngine.GetLenghtInSeconds());
+            }
+        }
+        private bool CanForwardToEnd(object obj)
+        {
+            if (_playbackState == PlaybackState.Playing || _playbackState == PlaybackState.Paused)
+                return true;
+            return false;
+        }
+
+
+        private void StopPlayback(object obj)
+        {
+            if (_audioEngine != null)
+            {
+                _audioEngine.PlaybackStopType = AudioEngine.PlaybackStopTypes.ByUser;
+                _audioEngine.Stop();
+            }
+        }
+        private bool CanStopPlayback(object obj)
+        {
+            if (_playbackState == PlaybackState.Playing || _playbackState == PlaybackState.Paused)
+                return true;
+            return false;
+        }
+
+
+        private void StartPlayback(object obj)
+        {
+            if (CurrentSelectedTrack != null)
+            {
+                if (_playbackState == PlaybackState.Stopped)
+                {
+                    _audioEngine = new AudioEngine(CurrentSelectedTrack.Location, CurrentVolume);
+                    _audioEngine.PlaybackStopType = AudioEngine.PlaybackStopTypes.EndOfFile;
+                    _audioEngine.Paused += _audioEngine_Paused;
+                    _audioEngine.Resumed += _audioEngine_Resumed;
+                    _audioEngine.Stopped += _audioEngine_Stopped;
+                    CurrentPlayingTrack = CurrentSelectedTrack;
+                    CurrentTrackLength = _audioEngine.GetLenghtInSeconds();
+                }
+                if (CurrentSelectedTrack == CurrentPlayingTrack)
+                    _audioEngine.PlayPause(CurrentVolume);
+            }
+        }
+        private bool CanStartPlayback(object obj)
+        {
+            if (CurrentSelectedTrack != null)
+                return true;
+            return false;
+        }
+        private void _audioEngine_Stopped()
+        {
+            _playbackState = PlaybackState.Stopped;
+            CommandManager.InvalidateRequerySuggested();
+            CurrentTrackPosition = 0;
+
+            if (_audioEngine.PlaybackStopType == AudioEngine.PlaybackStopTypes.EndOfFile)
+            {
+                CurrentSelectedTrack = Playlist.NextTrack(CurrentPlaylist, CurrentPlayingTrack);
+                StartPlayback(null);
+            }
+        }
+        private void _audioEngine_Resumed()
+        {
+            _playbackState = PlaybackState.Playing;
+        }
+        private void _audioEngine_Paused()
+        {
+            _playbackState = PlaybackState.Paused;
+        }
+
+
+        private void RewindToStart(object obj)
+        {
+            _audioEngine.SetPosition(0);
+        }
+        private bool CanRewindToStart(object obj)
+        {
+            if (_playbackState == PlaybackState.Playing)
+                return true;
+            return false;
+        }
+
+
+        private void LoadPlaylist(object obj)
+        {
+            Playlists = Reader.LoadPlaylists(Directory.GetCurrentDirectory());
+        }
+        private bool CanLoadPlaylist(object obj)
+        {
+            return true;
+        }
+
+
+        private void SavePlaylists(object obj)
+        {
+            Writer.Save(Playlists, Directory.GetCurrentDirectory());
+        }
+        private bool CanSavePlaylists(object obj)
+        {
+            return true;
+        }
+
+
+        private void AddFileToPlaylist(object obj)
+        {
+            throw new NotImplementedException();
+        }
+        private bool CanAddFileToPlaylist(object obj)
+        {
+            if (_playbackState == PlaybackState.Stopped)
+                return true;
+            return false;
+        }
+
+
+        private async void AddFolder(object obj)
+        {
+            // Using FolderBrowserDialog
+            using (var _openFolderDialog = new FolderBrowserDialog())
+            {
+                DialogResult result = _openFolderDialog.ShowDialog();
+
+                // If folder is selected
+                if (!string.IsNullOrWhiteSpace(_openFolderDialog.SelectedPath))
+                {
+                    // Get all directories from selected folder (include subDirectories in it)
+                    string[] filespaths = Directory.GetFiles(_openFolderDialog.SelectedPath, "*.*", SearchOption.AllDirectories);
+
+                    // Handle files
+                    if (filespaths != null)
+                    {
+                        await Core.Utils.TrackProcess((MetroWindow)System.Windows.Application.Current.MainWindow, filespaths);
+                    }
+                }
+
+                LoadPlaylist();
+            }
+        }
+        private bool CanAddFolder(object obj)
+        {
+            return true;
+        }
+
+
+        private async void AddFile(object obj)
+        {
+            // Using OpenfileDialog
+            using (var _openDialog = new OpenFileDialog())
+            {
+                // Filter is m4a and mp3 extensions, allow multiselection, default initialDirectory is system Music folder
+                _openDialog.Filter = "Music (*.mp3, *.m4a)|*.mp3;*.m4a|MP3 (*.mp3)|*.mp3|M4A (*.m4a)|*.m4a";
+                _openDialog.Multiselect = true;
+                _openDialog.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.MyMusic);
+                DialogResult result = _openDialog.ShowDialog();
+
+                string[] filespaths = null;
+
+                // If dialog return OK pressed, collect paths
+                if (result == DialogResult.OK)
+                    filespaths = _openDialog.FileNames;
+                else
+                    return;
+
+                // If paths is not null, handle files
+                if (filespaths.Length > 0)
+                {
+                    await Core.Utils.TrackProcess((MetroWindow)System.Windows.Application.Current.MainWindow, filespaths);
+                }
+
+                LoadPlaylist();
+            }
+        }
+        private bool CanAddFile(object obj)
+        {
+            return true;
+        }
+
+        #endregion
+
+
+        #region DragDrop 
+
+        private TrackDropHandler _trackListDropHandler;
+        public TrackDropHandler TrackListDropHandler
+        {
+            get { return _trackListDropHandler ?? (_trackListDropHandler = new TrackDropHandler()); }
+        }
+
+        private PlaylistListDropHandler _playlistListDropHandler;
+        public PlaylistListDropHandler PlaylistListDropHandler
+        {
+            get { return _playlistListDropHandler ?? (_playlistListDropHandler = new PlaylistListDropHandler()); }
+        }
+
+        #endregion
+
+
+    }
+}

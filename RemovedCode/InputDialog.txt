@@ -1,0 +1,56 @@
+private void DialogHost_DialogClosing(object sender, MaterialDesignThemes.Wpf.DialogClosingEventArgs eventArgs)
+        {
+            // Cancel/False => return
+            if (!Equals(eventArgs.Parameter, true)) return;
+
+            // OK/True
+            if (!string.IsNullOrWhiteSpace(textbox_PlaylistName.Text))
+            {
+                Playlist playlistNew = new Playlist();
+                playlistNew.Name = textbox_PlaylistName.Text;
+                Instance.MusicManager.Playlists.Add(playlistNew);
+                Instance.MusicManager.SelectedPlaylist = Instance.MusicManager.Playlists.Last();
+            }
+        }
+
+
+
+
+            <materialDesign:DialogHost DialogClosing="DialogHost_DialogClosing" Grid.Column="0" Grid.Row="1">
+
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="DialogClosing">
+                    <i:InvokeCommandAction Command="{Binding NewPlaylist}"/>
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
+            
+            <materialDesign:DialogHost.DialogContent>
+                <StackPanel Margin="16">
+                    <TextBlock Text="{DynamicResource playlistName}"/>
+                    <TextBox x:Name="textbox_PlaylistName" Margin="0 8 0 0" HorizontalAlignment="Stretch"/>
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right">
+                        <Button Style="{StaticResource MaterialDesignFlatButton}"
+                                    IsDefault="True"
+                                    Margin="0 8 0 0"
+                                    Command="materialDesign:DialogHost.CloseDialogCommand">
+                            <Button.CommandParameter>
+                                <system:Boolean>True</system:Boolean>
+                            </Button.CommandParameter>
+                            OK
+                        </Button>
+                        <Button Style="{StaticResource MaterialDesignFlatButton}"
+                                    IsDefault="True"
+                                    Margin="0 8 0 0"
+                                    Command="materialDesign:DialogHost.CloseDialogCommand">
+                            <Button.CommandParameter>
+                                <system:Boolean>False</system:Boolean>
+                            </Button.CommandParameter>
+                            CANCEL
+                        </Button>
+                    </StackPanel>
+                </StackPanel>
+            </materialDesign:DialogHost.DialogContent>
+
+
+
+        </materialDesign:DialogHost>

@@ -1,0 +1,172 @@
+C:\Users\Dohuta\Desktop\WFP Project\Hatsune - 初音\Levitate\Levitate\obj\Debug\Interop.MediaPlayer.dll
+C:\Users\Dohuta\Desktop\WFP Project\Hatsune - 初音\Levitate\Levitate\obj\Debug\Interop.WMPLib.dll
+C:\Users\Dohuta\Desktop\WFP Project\Hatsune - 初音\Levitate\Levitate\obj\Debug\Levitate.csproj.ResolveComReference.cache
+C:\Users\Dohuta\Desktop\WFP Project\Hatsune - 初音\Levitate\Levitate\obj\Debug\Resources\Languages\Lang_en-us.baml
+C:\Users\Dohuta\Desktop\WFP Project\Hatsune - 初音\Levitate\Levitate\obj\Debug\Resources\Languages\Lang_jp-jp.baml
+C:\Users\Dohuta\Desktop\WFP Project\Hatsune - 初音\Levitate\Levitate\obj\Debug\Resources\Languages\Lang_vi-vn.baml
+C:\Users\Dohuta\Desktop\WFP Project\Hatsune - 初音\Levitate\Levitate\obj\Debug\View\AboutWindow.g.cs
+C:\Users\Dohuta\Desktop\WFP Project\Hatsune - 初音\Levitate\Levitate\obj\Debug\View\MainWindow.g.cs
+C:\Users\Dohuta\Desktop\WFP Project\Hatsune - 初音\Levitate\Levitate\obj\Debug\View\MiniPlayer.g.cs
+C:\Users\Dohuta\Desktop\WFP Project\Hatsune - 初音\Levitate\Levitate\obj\Debug\View\TrackInformationWindow.g.cs
+C:\Users\Dohuta\Desktop\WFP Project\Hatsune - 初音\Levitate\Levitate\obj\Debug\App.g.cs
+C:\Users\Dohuta\Desktop\WFP Project\Hatsune - 初音\Levitate\Levitate\obj\Debug\Levitate_Content.g.cs
+C:\Users\Dohuta\Desktop\WFP Project\Hatsune - 初音\Levitate\Levitate\obj\Debug\GeneratedInternalTypeHelper.g.cs
+C:\Users\Dohuta\Desktop\WFP Project\Hatsune - 初音\Levitate\Levitate\obj\Debug\Levitate_MarkupCompile.cache
+C:\Users\Dohuta\Desktop\WFP Project\Hatsune - 初音\Levitate\Levitate\obj\Debug\Levitate_MarkupCompile.lref
+C:\Users\Dohuta\Desktop\WFP Project\Hatsune - 初音\Levitate\Levitate\bin\Debug\Music.mdf
+C:\Users\Dohuta\Desktop\WFP Project\Hatsune - 初音\Levitate\Levitate\bin\Debug\Music_log.ldf
+C:\Users\Dohuta\Desktop\WFP Project\Hatsune - 初音\Levitate\Levitate\bin\Debug\Levitate.exe.config
+C:\Users\Dohuta\Desktop\WFP Project\Hatsune - 初音\Levitate\Levitate\bin\Debug\Levitate.exe.manifest
+C:\Users\Dohuta\Desktop\WFP Project\Hatsune - 初音\Levitate\Levitate\bin\Debug\Levitate.application
+C:\Users\Dohuta\Desktop\WFP Project\Hatsune - 初音\Levitate\Levitate\bin\Debug\Levitate.exe
+C:\Users\Dohuta\Desktop\WFP Project\Hatsune - 初音\Levitate\Levitate\bin\Debug\Levitate.pdb
+C:\Users\Dohuta\Desktop\WFP Project\Hatsune - 初音\Levitate\Levitate\bin\Debug\GongSolutions.Wpf.DragDrop.dll
+C:\Users\Dohuta\Desktop\WFP Project\Hatsune - 初音\Levitate\Levitate\bin\Debug\MahApps.Metro.dll
+C:\Users\Dohuta\Desktop\WFP Project\Hatsune - 初音\Levitate\Levitate\bin\Debug\MahApps.Metro.IconPacks.dll
+C:\Users\Dohuta\Desktop\WFP Project\Hatsune - 初音\Levitate\Levitate\bin\Debug\MaterialDesignColors.dll
+C:\Users\Dohuta\Desktop\WFP Project\Hatsune - 初音\Levitate\Levitate\bin\Debug\MaterialDesignThemes.MahApps.dll
+C:\Users\Dohuta\Desktop\WFP Project\Hatsune - 初音\Levitate\Levitate\bin\Debug\MaterialDesignThemes.Wpf.dll
+C:\Users\Dohuta\Desktop\WFP Project\Hatsune - 初音\Levitate\Levitate\bin\Debug\NAudio.dll
+C:\Users\Dohuta\Desktop\WFP Project\Hatsune - 初音\Levitate\Levitate\bin\Debug\policy.2.0.taglib-sharp.dll
+C:\Users\Dohuta\Desktop\WFP Project\Hatsune - 初音\Levitate\Levitate\bin\Debug\System.Windows.Interactivity.dll
+C:\Users\Dohuta\Desktop\WFP Project\Hatsune - 初音\Levitate\Levitate\bin\Debug\taglib-sharp.dll
+C:\Users\Dohuta\Desktop\WFP Project\Hatsune - 初音\Levitate\Levitate\bin\Debug\GongSolutions.Wpf.DragDrop.pdb
+C:\Users\Dohuta\Desktop\WFP Project\Hatsune - 初音\Levitate\Levitate\bin\Debug\GongSolutions.Wpf.DragDrop.xml
+C:\Users\Dohuta\Desktop\WFP Project\Hatsune - 初音\Levitate\Levitate\bin\Debug\MahApps.Metro.pdb
+C:\Users\Dohuta\Desktop\WFP Project\Hatsune - 初音\Levitate\Levitate\bin\Debug\MahApps.Metro.xml
+C:\Users\Dohuta\Desktop\WFP Project\Hatsune - 初音\Levitate\Levitate\bin\Debug\MahApps.Metro.IconPacks.pdb
+C:\Users\Dohuta\Desktop\WFP Project\Hatsune - 初音\Levitate\Levitate\bin\Debug\MahApps.Metro.IconPacks.xml
+C:\Users\Dohuta\Desktop\WFP Project\Hatsune - 初音\Levitate\Levitate\bin\Debug\MaterialDesignColors.pdb
+C:\Users\Dohuta\Desktop\WFP Project\Hatsune - 初音\Levitate\Levitate\bin\Debug\MaterialDesignThemes.Wpf.pdb
+C:\Users\Dohuta\Desktop\WFP Project\Hatsune - 初音\Levitate\Levitate\bin\Debug\MaterialDesignThemes.Wpf.xml
+C:\Users\Dohuta\Desktop\WFP Project\Hatsune - 初音\Levitate\Levitate\bin\Debug\NAudio.xml
+C:\Users\Dohuta\Desktop\WFP Project\Hatsune - 初音\Levitate\Levitate\bin\Debug\policy.2.0.taglib-sharp.config
+C:\Users\Dohuta\Desktop\WFP Project\Hatsune - 初音\Levitate\Levitate\obj\Debug\App.baml
+C:\Users\Dohuta\Desktop\WFP Project\Hatsune - 初音\Levitate\Levitate\obj\Debug\View\AboutWindow.baml
+C:\Users\Dohuta\Desktop\WFP Project\Hatsune - 初音\Levitate\Levitate\obj\Debug\View\MainWindow.baml
+C:\Users\Dohuta\Desktop\WFP Project\Hatsune - 初音\Levitate\Levitate\obj\Debug\View\MiniPlayer.baml
+C:\Users\Dohuta\Desktop\WFP Project\Hatsune - 初音\Levitate\Levitate\obj\Debug\View\TrackInformationWindow.baml
+C:\Users\Dohuta\Desktop\WFP Project\Hatsune - 初音\Levitate\Levitate\obj\Debug\Levitate.g.resources
+C:\Users\Dohuta\Desktop\WFP Project\Hatsune - 初音\Levitate\Levitate\obj\Debug\Levitate.Properties.Resources.resources
+C:\Users\Dohuta\Desktop\WFP Project\Hatsune - 初音\Levitate\Levitate\obj\Debug\Levitate.csproj.GenerateResource.Cache
+C:\Users\Dohuta\Desktop\WFP Project\Hatsune - 初音\Levitate\Levitate\obj\Debug\Levitate.exe.manifest
+C:\Users\Dohuta\Desktop\WFP Project\Hatsune - 初音\Levitate\Levitate\obj\Debug\Levitate.application
+C:\Users\Dohuta\Desktop\WFP Project\Hatsune - 初音\Levitate\Levitate\obj\Debug\Levitate.exe
+C:\Users\Dohuta\Desktop\WFP Project\Hatsune - 初音\Levitate\Levitate\obj\Debug\Levitate.pdb
+C:\Users\Dohuta\Desktop\WFP Project\Hatsune - 初音\Levitate\Levitate\obj\Debug\Levitate.csprojResolveAssemblyReference.cache
+C:\Users\Admin\Desktop\Levitate\Levitate\bin\Debug\Music.mdf
+C:\Users\Admin\Desktop\Levitate\Levitate\bin\Debug\Music_log.ldf
+C:\Users\Admin\Desktop\Levitate\Levitate\bin\Debug\Levitate.exe.config
+C:\Users\Admin\Desktop\Levitate\Levitate\bin\Debug\Levitate.exe.manifest
+C:\Users\Admin\Desktop\Levitate\Levitate\bin\Debug\Levitate.application
+C:\Users\Admin\Desktop\Levitate\Levitate\bin\Debug\Levitate.exe
+C:\Users\Admin\Desktop\Levitate\Levitate\bin\Debug\Levitate.pdb
+C:\Users\Admin\Desktop\Levitate\Levitate\bin\Debug\GongSolutions.Wpf.DragDrop.dll
+C:\Users\Admin\Desktop\Levitate\Levitate\bin\Debug\MahApps.Metro.dll
+C:\Users\Admin\Desktop\Levitate\Levitate\bin\Debug\MahApps.Metro.IconPacks.dll
+C:\Users\Admin\Desktop\Levitate\Levitate\bin\Debug\MaterialDesignColors.dll
+C:\Users\Admin\Desktop\Levitate\Levitate\bin\Debug\MaterialDesignThemes.MahApps.dll
+C:\Users\Admin\Desktop\Levitate\Levitate\bin\Debug\MaterialDesignThemes.Wpf.dll
+C:\Users\Admin\Desktop\Levitate\Levitate\bin\Debug\NAudio.dll
+C:\Users\Admin\Desktop\Levitate\Levitate\bin\Debug\policy.2.0.taglib-sharp.dll
+C:\Users\Admin\Desktop\Levitate\Levitate\bin\Debug\System.Windows.Interactivity.dll
+C:\Users\Admin\Desktop\Levitate\Levitate\bin\Debug\taglib-sharp.dll
+C:\Users\Admin\Desktop\Levitate\Levitate\bin\Debug\GongSolutions.Wpf.DragDrop.pdb
+C:\Users\Admin\Desktop\Levitate\Levitate\bin\Debug\GongSolutions.Wpf.DragDrop.xml
+C:\Users\Admin\Desktop\Levitate\Levitate\bin\Debug\MahApps.Metro.pdb
+C:\Users\Admin\Desktop\Levitate\Levitate\bin\Debug\MahApps.Metro.xml
+C:\Users\Admin\Desktop\Levitate\Levitate\bin\Debug\MahApps.Metro.IconPacks.pdb
+C:\Users\Admin\Desktop\Levitate\Levitate\bin\Debug\MahApps.Metro.IconPacks.xml
+C:\Users\Admin\Desktop\Levitate\Levitate\bin\Debug\MaterialDesignColors.pdb
+C:\Users\Admin\Desktop\Levitate\Levitate\bin\Debug\MaterialDesignThemes.Wpf.pdb
+C:\Users\Admin\Desktop\Levitate\Levitate\bin\Debug\MaterialDesignThemes.Wpf.xml
+C:\Users\Admin\Desktop\Levitate\Levitate\bin\Debug\NAudio.xml
+C:\Users\Admin\Desktop\Levitate\Levitate\bin\Debug\policy.2.0.taglib-sharp.config
+C:\Users\Admin\Desktop\Levitate\Levitate\obj\Debug\Levitate.csprojResolveAssemblyReference.cache
+C:\Users\Admin\Desktop\Levitate\Levitate\obj\Debug\Interop.MediaPlayer.dll
+C:\Users\Admin\Desktop\Levitate\Levitate\obj\Debug\Interop.WMPLib.dll
+C:\Users\Admin\Desktop\Levitate\Levitate\obj\Debug\Levitate.csproj.ResolveComReference.cache
+C:\Users\Admin\Desktop\Levitate\Levitate\obj\Debug\Resources\Languages\Lang_en-us.baml
+C:\Users\Admin\Desktop\Levitate\Levitate\obj\Debug\Resources\Languages\Lang_jp-jp.baml
+C:\Users\Admin\Desktop\Levitate\Levitate\obj\Debug\Resources\Languages\Lang_vi-vn.baml
+C:\Users\Admin\Desktop\Levitate\Levitate\obj\Debug\View\AboutWindow.g.cs
+C:\Users\Admin\Desktop\Levitate\Levitate\obj\Debug\View\MainWindow.g.cs
+C:\Users\Admin\Desktop\Levitate\Levitate\obj\Debug\View\MiniPlayer.g.cs
+C:\Users\Admin\Desktop\Levitate\Levitate\obj\Debug\View\TrackInformationWindow.g.cs
+C:\Users\Admin\Desktop\Levitate\Levitate\obj\Debug\App.g.cs
+C:\Users\Admin\Desktop\Levitate\Levitate\obj\Debug\Levitate_Content.g.cs
+C:\Users\Admin\Desktop\Levitate\Levitate\obj\Debug\GeneratedInternalTypeHelper.g.cs
+C:\Users\Admin\Desktop\Levitate\Levitate\obj\Debug\Levitate_MarkupCompile.cache
+C:\Users\Admin\Desktop\Levitate\Levitate\obj\Debug\Levitate_MarkupCompile.lref
+C:\Users\Admin\Desktop\Levitate\Levitate\obj\Debug\App.baml
+C:\Users\Admin\Desktop\Levitate\Levitate\obj\Debug\View\AboutWindow.baml
+C:\Users\Admin\Desktop\Levitate\Levitate\obj\Debug\View\MainWindow.baml
+C:\Users\Admin\Desktop\Levitate\Levitate\obj\Debug\View\MiniPlayer.baml
+C:\Users\Admin\Desktop\Levitate\Levitate\obj\Debug\View\TrackInformationWindow.baml
+C:\Users\Admin\Desktop\Levitate\Levitate\obj\Debug\Levitate.g.resources
+C:\Users\Admin\Desktop\Levitate\Levitate\obj\Debug\Levitate.Properties.Resources.resources
+C:\Users\Admin\Desktop\Levitate\Levitate\obj\Debug\Levitate.csproj.GenerateResource.cache
+C:\Users\Admin\Desktop\Levitate\Levitate\obj\Debug\Levitate.csproj.CoreCompileInputs.cache
+C:\Users\Admin\Desktop\Levitate\Levitate\obj\Debug\Levitate.exe.manifest
+C:\Users\Admin\Desktop\Levitate\Levitate\obj\Debug\Levitate.application
+C:\Users\Admin\Desktop\Levitate\Levitate\obj\Debug\Levitate.csproj.CopyComplete
+C:\Users\Admin\Desktop\Levitate\Levitate\obj\Debug\Levitate.exe
+C:\Users\Admin\Desktop\Levitate\Levitate\obj\Debug\Levitate.pdb
+C:\Users\Admin\Desktop\Legitateac\Levitate\bin\Debug\Music.mdf
+C:\Users\Admin\Desktop\Legitateac\Levitate\bin\Debug\Music_log.ldf
+C:\Users\Admin\Desktop\Legitateac\Levitate\bin\Debug\Levitate.exe.config
+C:\Users\Admin\Desktop\Legitateac\Levitate\bin\Debug\Levitate.exe.manifest
+C:\Users\Admin\Desktop\Legitateac\Levitate\bin\Debug\Levitate.application
+C:\Users\Admin\Desktop\Legitateac\Levitate\bin\Debug\Levitate.exe
+C:\Users\Admin\Desktop\Legitateac\Levitate\bin\Debug\Levitate.pdb
+C:\Users\Admin\Desktop\Legitateac\Levitate\bin\Debug\GongSolutions.Wpf.DragDrop.dll
+C:\Users\Admin\Desktop\Legitateac\Levitate\bin\Debug\MahApps.Metro.dll
+C:\Users\Admin\Desktop\Legitateac\Levitate\bin\Debug\MahApps.Metro.IconPacks.dll
+C:\Users\Admin\Desktop\Legitateac\Levitate\bin\Debug\MaterialDesignColors.dll
+C:\Users\Admin\Desktop\Legitateac\Levitate\bin\Debug\MaterialDesignThemes.MahApps.dll
+C:\Users\Admin\Desktop\Legitateac\Levitate\bin\Debug\MaterialDesignThemes.Wpf.dll
+C:\Users\Admin\Desktop\Legitateac\Levitate\bin\Debug\NAudio.dll
+C:\Users\Admin\Desktop\Legitateac\Levitate\bin\Debug\policy.2.0.taglib-sharp.dll
+C:\Users\Admin\Desktop\Legitateac\Levitate\bin\Debug\System.Windows.Interactivity.dll
+C:\Users\Admin\Desktop\Legitateac\Levitate\bin\Debug\taglib-sharp.dll
+C:\Users\Admin\Desktop\Legitateac\Levitate\bin\Debug\GongSolutions.Wpf.DragDrop.pdb
+C:\Users\Admin\Desktop\Legitateac\Levitate\bin\Debug\GongSolutions.Wpf.DragDrop.xml
+C:\Users\Admin\Desktop\Legitateac\Levitate\bin\Debug\MahApps.Metro.pdb
+C:\Users\Admin\Desktop\Legitateac\Levitate\bin\Debug\MahApps.Metro.xml
+C:\Users\Admin\Desktop\Legitateac\Levitate\bin\Debug\MahApps.Metro.IconPacks.pdb
+C:\Users\Admin\Desktop\Legitateac\Levitate\bin\Debug\MahApps.Metro.IconPacks.xml
+C:\Users\Admin\Desktop\Legitateac\Levitate\bin\Debug\MaterialDesignColors.pdb
+C:\Users\Admin\Desktop\Legitateac\Levitate\bin\Debug\MaterialDesignThemes.Wpf.pdb
+C:\Users\Admin\Desktop\Legitateac\Levitate\bin\Debug\MaterialDesignThemes.Wpf.xml
+C:\Users\Admin\Desktop\Legitateac\Levitate\bin\Debug\NAudio.xml
+C:\Users\Admin\Desktop\Legitateac\Levitate\bin\Debug\policy.2.0.taglib-sharp.config
+C:\Users\Admin\Desktop\Legitateac\Levitate\obj\Debug\Levitate.csprojResolveAssemblyReference.cache
+C:\Users\Admin\Desktop\Legitateac\Levitate\obj\Debug\Interop.MediaPlayer.dll
+C:\Users\Admin\Desktop\Legitateac\Levitate\obj\Debug\Interop.WMPLib.dll
+C:\Users\Admin\Desktop\Legitateac\Levitate\obj\Debug\Levitate.csproj.ResolveComReference.cache
+C:\Users\Admin\Desktop\Legitateac\Levitate\obj\Debug\Resources\Languages\Lang_en-us.baml
+C:\Users\Admin\Desktop\Legitateac\Levitate\obj\Debug\Resources\Languages\Lang_jp-jp.baml
+C:\Users\Admin\Desktop\Legitateac\Levitate\obj\Debug\Resources\Languages\Lang_vi-vn.baml
+C:\Users\Admin\Desktop\Legitateac\Levitate\obj\Debug\View\AboutWindow.g.cs
+C:\Users\Admin\Desktop\Legitateac\Levitate\obj\Debug\View\MainWindow.g.cs
+C:\Users\Admin\Desktop\Legitateac\Levitate\obj\Debug\View\MiniPlayer.g.cs
+C:\Users\Admin\Desktop\Legitateac\Levitate\obj\Debug\View\TrackInformationWindow.g.cs
+C:\Users\Admin\Desktop\Legitateac\Levitate\obj\Debug\App.g.cs
+C:\Users\Admin\Desktop\Legitateac\Levitate\obj\Debug\Levitate_Content.g.cs
+C:\Users\Admin\Desktop\Legitateac\Levitate\obj\Debug\GeneratedInternalTypeHelper.g.cs
+C:\Users\Admin\Desktop\Legitateac\Levitate\obj\Debug\Levitate_MarkupCompile.cache
+C:\Users\Admin\Desktop\Legitateac\Levitate\obj\Debug\Levitate_MarkupCompile.lref
+C:\Users\Admin\Desktop\Legitateac\Levitate\obj\Debug\App.baml
+C:\Users\Admin\Desktop\Legitateac\Levitate\obj\Debug\View\AboutWindow.baml
+C:\Users\Admin\Desktop\Legitateac\Levitate\obj\Debug\View\MainWindow.baml
+C:\Users\Admin\Desktop\Legitateac\Levitate\obj\Debug\View\MiniPlayer.baml
+C:\Users\Admin\Desktop\Legitateac\Levitate\obj\Debug\View\TrackInformationWindow.baml
+C:\Users\Admin\Desktop\Legitateac\Levitate\obj\Debug\Levitate.g.resources
+C:\Users\Admin\Desktop\Legitateac\Levitate\obj\Debug\Levitate.Properties.Resources.resources
+C:\Users\Admin\Desktop\Legitateac\Levitate\obj\Debug\Levitate.csproj.GenerateResource.cache
+C:\Users\Admin\Desktop\Legitateac\Levitate\obj\Debug\Levitate.csproj.CoreCompileInputs.cache
+C:\Users\Admin\Desktop\Legitateac\Levitate\obj\Debug\Levitate.exe.manifest
+C:\Users\Admin\Desktop\Legitateac\Levitate\obj\Debug\Levitate.application
+C:\Users\Admin\Desktop\Legitateac\Levitate\obj\Debug\Levitate.csproj.CopyComplete
+C:\Users\Admin\Desktop\Legitateac\Levitate\obj\Debug\Levitate.exe
+C:\Users\Admin\Desktop\Legitateac\Levitate\obj\Debug\Levitate.pdb
